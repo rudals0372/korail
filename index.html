@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장비 매뉴얼 PDF 및 동영상 미리보기</title>
+    <title>PDF 미리보기</title>
     <style>
         button {
             margin: 10px;
@@ -11,84 +11,30 @@
             font-size: 16px;
             cursor: pointer;
         }
-
-        /* PDF 미리보기 iframe 스타일 */
-        .pdf-viewer, .video-viewer {
-            margin-top: 20px;
-            width: 100%;
-            height: 600px;
-        }
-
-        /* 동영상에서 다운로드 버튼 숨기기 */
-        video::-webkit-media-controls-panel {
-            display: none !important;
-        }
     </style>
+    <!-- PDF.js 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
 <body>
-    <h1>장비 매뉴얼 PDF 및 동영상 미리보기</h1>
 
-    <!-- PDF 파일 버튼들 -->
-    <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/검사기준.pdf')">검사기준 PDF</button>
-    <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/노스가동매뉴얼.pdf')">노스가동매뉴얼 PDF</button>
-    <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/설치방법.pdf')">설치방법 PDF</button>
-    <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/유지보수매뉴얼.pdf')">유지보수매뉴얼 PDF</button>
-    <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/유지보수방법.pdf')">유지보수방법 PDF</button>
+<h1>PDF 파일 미리보기</h1>
 
-    <h2>HWP 파일(변환된 PDF로 미리보기)</h2>
-    <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/고속분기기히팅.pdf')">고속분기기히팅 PDF</button>
-    <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/공구목록.pdf')">공구목록 PDF</button>
+<!-- PDF 파일 미리보기 버튼 -->
+<h2>PDF 매뉴얼</h2>
+<button onclick="openPDF('https://github.com/rudals0372/k/raw/main/검사기준.pdf')">검사기준 PDF</button>
+<button onclick="openPDF('https://github.com/rudals0372/k/raw/main/노스가동매뉴얼.pdf')">노스가동매뉴얼 PDF</button>
+<button onclick="openPDF('https://github.com/rudals0372/k/raw/main/설치방법.pdf')">설치방법 PDF</button>
+<button onclick="openPDF('https://github.com/rudals0372/k/raw/main/유지보수매뉴얼.pdf')">유지보수매뉴얼 PDF</button>
+<button onclick="openPDF('https://github.com/rudals0372/k/raw/main/유지보수방법.pdf')">유지보수방법 PDF</button>
 
-    <h2>PPTX 파일</h2>
-    <button onclick="window.open('https://docs.google.com/presentation/d/FILE_ID/preview', '_blank')">표준결선도 PPTX</button>
+<script>
+    function openPDF(pdfUrl) {
+        const newWindow = window.open();
+        const viewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(pdfUrl);
 
-    <h2>MP4 파일</h2>
-    <button onclick="openVideoViewer('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4')">밀착 동영상</button>
+        newWindow.location.href = viewerUrl;
+    }
+</script>
 
-    <!-- PDF 미리보기 iframe -->
-    <iframe id="pdfViewer" class="pdf-viewer" style="display:none;"></iframe>
-
-    <!-- 동영상 미리보기 -->
-    <div id="videoContainer" style="display:none;">
-        <video id="videoViewer" controls class="video-viewer">
-            Your browser does not support the video tag.
-        </video>
-    </div>
-
-    <script>
-        // PDF.js로 PDF 미리보기 창 열기
-        function openPDFViewer(url) {
-            // 새로운 창에서 PDF.js로 PDF를 미리보여주는 기능
-            var pdfWindow = window.open('', '_blank');
-            pdfWindow.document.write('<html><head><title>PDF 미리보기</title></head><body>');
-            pdfWindow.document.write('<h2>PDF 미리보기</h2><div id="pdfContainer"></div>');
-            pdfWindow.document.write('<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>');
-            pdfWindow.document.write('<script>');
-            pdfWindow.document.write('pdfjsLib.getDocument("' + url + '").promise.then(function(pdf) {');
-            pdfWindow.document.write('    console.log("PDF 로드 성공");');
-            pdfWindow.document.write('    pdf.getPage(1).then(function(page) {');
-            pdfWindow.document.write('        var canvas = document.createElement("canvas");');
-            pdfWindow.document.write('        var context = canvas.getContext("2d");');
-            pdfWindow.document.write('        var scale = 1.5;');
-            pdfWindow.document.write('        var viewport = page.getViewport({ scale: scale });');
-            pdfWindow.document.write('        canvas.height = viewport.height;');
-            pdfWindow.document.write('        canvas.width = viewport.width;');
-            pdfWindow.document.write('        page.render({ canvasContext: context, viewport: viewport });');
-            pdfWindow.document.write('        document.getElementById("pdfContainer").appendChild(canvas);');
-            pdfWindow.document.write('    });');
-            pdfWindow.document.write('});');
-            pdfWindow.document.write('</script>');
-            pdfWindow.document.write('</body></html>');
-        }
-
-        // MP4 비디오 미리보기
-        function openVideoViewer(url) {
-            var videoContainer = document.getElementById('videoContainer');
-            var video = document.getElementById('videoViewer');
-            video.src = url;
-            videoContainer.style.display = 'block';  // 비디오 컨테이너 표시
-        }
-    </script>
 </body>
 </html>
