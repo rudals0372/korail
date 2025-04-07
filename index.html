@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>파일 미리보기</title>
+    <title>장비 매뉴얼</title>
     <style>
         button {
             margin: 10px;
@@ -11,18 +11,53 @@
             font-size: 16px;
             cursor: pointer;
         }
+        iframe, video {
+            margin-top: 20px;
+            width: 100%;
+            height: 600px;
+        }
     </style>
 </head>
 <body>
-    <h1>파일 미리보기</h1>
+    <h1>장비 매뉴얼 미리보기</h1>
 
-    <button onclick="openPDF('https://github.com/rudals0372/k/raw/main/검사기준.pdf')">검사기준 PDF</button>
-    <button onclick="openPDF('https://github.com/rudals0372/k/raw/main/노스가동매뉴얼.pdf')">노스가동매뉴얼 PDF</button>
-    <button onclick="openPDF('https://github.com/rudals0372/k/raw/main/설치방법.pdf')">설치방법 PDF</button>
+    <!-- PDF 미리보기 -->
+    <h2>PDF 매뉴얼</h2>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/검사기준.pdf')">검사기준 PDF</button>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/노스가동매뉴얼.pdf')">노스가동매뉴얼 PDF</button>
+    <iframe id="pdfViewer" style="display:none;"></iframe>
+
+    <!-- HWP 파일(변환된 PDF로 미리보기) -->
+    <h2>HWP 매뉴얼</h2>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/고속분기기히팅.pdf')">고속분기기히팅 PDF</button>
+
+    <!-- PPTX 미리보기 -->
+    <h2>PPTX 매뉴얼</h2>
+    <button onclick="showPPTX('https://docs.google.com/presentation/d/FILE_ID/preview')">표준결선도 PPTX</button>
+    <iframe id="pptxViewer" style="display:none;"></iframe>
+
+    <!-- MP4 비디오 -->
+    <h2>동영상</h2>
+    <button onclick="showVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4')">밀착 동영상</button>
+    <video id="videoViewer" controls style="display:none;"></video>
 
     <script>
-        function openPDF(url) {
-            window.open(url, '_blank');  // 새 탭에서 PDF 파일 열기
+        function showPDF(url) {
+            var iframe = document.getElementById('pdfViewer');
+            iframe.src = "https://docs.google.com/viewer?url=" + encodeURIComponent(url);
+            iframe.style.display = 'block';
+        }
+
+        function showPPTX(url) {
+            var iframe = document.getElementById('pptxViewer');
+            iframe.src = url;
+            iframe.style.display = 'block';
+        }
+
+        function showVideo(url) {
+            var video = document.getElementById('videoViewer');
+            video.src = url;
+            video.style.display = 'block';
         }
     </script>
 </body>
