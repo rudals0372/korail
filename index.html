@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장비 매뉴얼</title>
+    <title>파일 열기</title>
     <style>
         button {
             margin: 10px;
@@ -11,27 +11,67 @@
             font-size: 16px;
             cursor: pointer;
         }
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+        }
     </style>
 </head>
 <body>
-    <h1>장비 매뉴얼 미리보기</h1>
+    <h1>파일 열기</h1>
 
-    <!-- PDF 매뉴얼 -->
+    <!-- PDF 파일 -->
     <h2>PDF 매뉴얼</h2>
-    <button onclick="window.open('https://docs.google.com/viewer?url=https://github.com/rudals0372/k/raw/main/검사기준.pdf', '_blank')">검사기준 PDF</button>
-    <button onclick="window.open('https://docs.google.com/viewer?url=https://github.com/rudals0372/k/raw/main/노스가동매뉴얼.pdf', '_blank')">노스가동매뉴얼 PDF</button>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/검사기준.pdf')">검사기준 PDF</button>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/노스가동매뉴얼.pdf')">노스가동매뉴얼 PDF</button>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/설치방법.pdf')">설치방법 PDF</button>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/유지보수매뉴얼.pdf')">유지보수매뉴얼 PDF</button>
+    <button onclick="showPDF('https://github.com/rudals0372/k/raw/main/유지보수방법.pdf')">유지보수방법 PDF</button>
 
-    <!-- HWP 파일(변환된 PDF로 미리보기) -->
+    <!-- HWP 파일 -->
     <h2>HWP 매뉴얼</h2>
-    <button onclick="window.open('https://docs.google.com/viewer?url=https://github.com/rudals0372/k/raw/main/고속분기기히팅.pdf', '_blank')">고속분기기히팅 PDF</button>
+    <button onclick="window.open('https://github.com/rudals0372/k/raw/main/고속분기기히팅.hwp', '_blank')">고속분기기히팅 HWP</button>
+    <button onclick="window.open('https://github.com/rudals0372/k/raw/main/공구목록.hwp', '_blank')">공구목록 HWP</button>
 
-    <!-- PPTX 매뉴얼 -->
-    <h2>PPTX 매뉴얼</h2>
-    <button onclick="window.open('https://docs.google.com/presentation/d/FILE_ID/preview', '_blank')">표준결선도 PPTX</button>
+    <!-- PPT 파일 -->
+    <h2>PPT 매뉴얼</h2>
+    <button onclick="window.open('https://github.com/rudals0372/k/raw/main/표준결선도.pptx', '_blank')">표준결선도 PPT</button>
 
-    <!-- MP4 비디오 -->
-    <h2>동영상</h2>
-    <button onclick="window.open('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4', '_blank')">밀착 동영상</button>
+    <!-- MP4 파일 -->
+    <h2>MP4 동영상</h2>
+    <button onclick="showVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4')">밀착 동영상</button>
 
+    <!-- PDF 미리보기 -->
+    <div id="pdfViewerContainer" style="display:none;">
+        <iframe id="pdfViewer"></iframe>
+    </div>
+
+    <!-- MP4 비디오 미리보기 -->
+    <div id="videoContainer" style="display:none;">
+        <video id="videoPlayer" controls>
+            <source id="videoSource" src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <script>
+        function showPDF(url) {
+            var iframe = document.getElementById('pdfViewer');
+            var viewerURL = "https://docs.google.com/viewer?url=" + encodeURIComponent(url);
+            iframe.src = viewerURL;
+            document.getElementById('pdfViewerContainer').style.display = 'block';
+        }
+
+        function showVideo(url) {
+            var videoContainer = document.getElementById('videoContainer');
+            var videoPlayer = document.getElementById('videoPlayer');
+            var videoSource = document.getElementById('videoSource');
+
+            videoSource.src = url;
+            videoPlayer.load(); // 새로운 소스를 로드
+            videoContainer.style.display = 'block'; // 비디오 컨테이너 표시
+        }
+    </script>
 </body>
 </html>
