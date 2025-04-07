@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>장비 매뉴얼 PDF 미리보기</title>
+    <title>장비 매뉴얼 PDF 및 동영상 미리보기</title>
     <style>
         button {
             margin: 10px;
@@ -13,16 +13,21 @@
         }
 
         /* PDF 미리보기 iframe 스타일 */
-        .pdf-viewer {
+        .pdf-viewer, .video-viewer {
             margin-top: 20px;
             width: 100%;
             height: 600px;
+        }
+
+        /* 동영상에서 다운로드 버튼 숨기기 */
+        video::-webkit-media-controls-panel {
+            display: none !important;
         }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
 <body>
-    <h1>장비 매뉴얼 PDF 미리보기</h1>
+    <h1>장비 매뉴얼 PDF 및 동영상 미리보기</h1>
 
     <!-- PDF 파일 버튼들 -->
     <button onclick="openPDFViewer('https://github.com/rudals0372/k/raw/main/검사기준.pdf')">검사기준 PDF</button>
@@ -39,10 +44,17 @@
     <button onclick="window.open('https://docs.google.com/presentation/d/FILE_ID/preview', '_blank')">표준결선도 PPTX</button>
 
     <h2>MP4 파일</h2>
-    <button onclick="window.open('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4', '_blank')">밀착 동영상</button>
+    <button onclick="openVideoViewer('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4')">밀착 동영상</button>
 
-    <!-- PDF를 표시할 iframe -->
+    <!-- PDF 미리보기 iframe -->
     <iframe id="pdfViewer" class="pdf-viewer" style="display:none;"></iframe>
+
+    <!-- 동영상 미리보기 -->
+    <div id="videoContainer" style="display:none;">
+        <video id="videoViewer" controls class="video-viewer">
+            Your browser does not support the video tag.
+        </video>
+    </div>
 
     <script>
         // PDF.js로 PDF 미리보기 창 열기
@@ -68,6 +80,14 @@
             pdfWindow.document.write('});');
             pdfWindow.document.write('</script>');
             pdfWindow.document.write('</body></html>');
+        }
+
+        // MP4 비디오 미리보기
+        function openVideoViewer(url) {
+            var videoContainer = document.getElementById('videoContainer');
+            var video = document.getElementById('videoViewer');
+            video.src = url;
+            videoContainer.style.display = 'block';  // 비디오 컨테이너 표시
         }
     </script>
 </body>
