@@ -38,14 +38,13 @@
             text-align: center;
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            min-height: 180px;
+            width: 200px; /* 카드의 너비 설정 */
+            height: 200px; /* 카드의 높이 설정 (정사각형) */
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: space-between;
             position: relative;
-            max-width: 200px;
-            margin: 0 auto;
         }
 
         .card img {
@@ -161,7 +160,7 @@
     <div class="card" id="video-card1">
         <i class="fa fa-video-camera"></i>
         <h3>밀착검지기 동영상</h3>
-    </div>
+        </div>
 
     <div class="card" id="video-card2">
         <i class="fa fa-video-camera"></i>
