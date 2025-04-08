@@ -179,12 +179,13 @@
 
     // 비디오 파일 스트리밍
     function openVideo(videoUrl) {
-        // 모든 영역을 숨기고, 해당 내용만 보이게 하기
+        // 모든 콘텐츠를 숨기고, 해당 내용만 보이게 하기
         document.getElementById('pdf-buttons').style.display = 'none';
         document.getElementById('video-container').style.display = 'none';
 
         // 동일한 비디오 카드 클릭 시 초기화
         if (currentVideo === videoUrl) {
+            // 동영상이 열려있으면 닫고 PDF 버튼들도 숨기기
             document.getElementById('video-container').style.display = 'none';
             currentVideo = '';
         } else {
