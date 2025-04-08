@@ -184,7 +184,7 @@
 
 <!-- 비디오 스트리밍 영역 -->
 <div id="video-container" style="display: none;">
-    <h2>비디오 재생</h2>
+    <h2 id="video-title">비디오 재생</h2> <!-- 동적으로 변경되는 비디오 제목 -->
     <video id="video-player" controls>
         <source id="video-source" src="" type="video/mp4">
         Your browser does not support the video tag.
@@ -204,10 +204,13 @@
 
 <script>
     // 비디오 파일 스트리밍
-    function openVideo(videoUrl) {
+    function openVideo(videoUrl, videoTitle) {
         document.getElementById('video-source').src = videoUrl;
         document.getElementById('video-player').load();
         document.getElementById('video-container').style.display = 'block';
+        
+        // 비디오 제목 업데이트
+        document.getElementById('video-title').textContent = videoTitle;
         
         // 다운로드 링크 업데이트
         document.getElementById('download-link').href = videoUrl;
@@ -222,15 +225,15 @@
 
     // 카드 클릭 시 비디오 또는 PDF 버튼 표시
     document.getElementById('video-card1').addEventListener('click', function() {
-        openVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4');
+        openVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4', '밀착검지기 동영상'); // 제목과 URL 전달
     });
 
     document.getElementById('video-card2').addEventListener('click', function() {
-        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상1.mp4');  // 다른 비디오 URL
+        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상1.mp4', '동영상 2'); // 제목과 URL 전달
     });
 
     document.getElementById('video-card3').addEventListener('click', function() {
-        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상2.mp4');  // 다른 비디오 URL
+        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상2.mp4', '동영상 3'); // 제목과 URL 전달
     });
 
     document.getElementById('pdf-card').addEventListener('click', function() {
