@@ -6,17 +6,18 @@
     <title>MJ81</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            font-family: 'Roboto', sans-serif;
+            background-color: #f9f9f9;
             margin: 0;
             padding: 0;
+            color: #333;
         }
 
         h1 {
             text-align: center;
+            font-size: 2.5em;
             margin-top: 30px;
             color: #333;
-            font-size: 2em;
         }
 
         .container {
@@ -24,18 +25,24 @@
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
             padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
         }
 
         .card {
             background-color: #fff;
-            border-radius: 8px;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
             text-align: center;
-            padding: 15px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
-            max-width: 250px; /* 카드 최대 너비 */
-            margin: 0 auto; /* 카드가 가운데로 정렬되도록 */
+            min-height: 180px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
         }
 
         .card img {
@@ -45,27 +52,27 @@
         }
 
         .card h3 {
-            margin: 0;
-            font-size: 16px;
+            font-size: 18px;
             font-weight: 600;
             color: #333;
+            margin: 10px 0;
         }
 
         .card:hover {
-            transform: scale(1.05);
-            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2); /* 카드 hover 시 그림자 효과 */
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
         }
 
         button {
-            margin: 10px;
             padding: 12px 20px;
-            font-size: 14px;
+            font-size: 16px;
             cursor: pointer;
             background-color: #333;
             color: white;
             border: none;
             border-radius: 5px;
             transition: background-color 0.3s ease;
+            margin: 10px;
         }
 
         button:hover {
@@ -74,7 +81,7 @@
 
         video {
             width: 100%;
-            max-width: 700px;
+            max-width: 800px;
             margin: 20px auto;
             display: block;
             border-radius: 10px;
@@ -98,11 +105,11 @@
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 1.8em;
+                font-size: 2em;
             }
 
             .card {
-                padding: 12px;
+                padding: 20px;
                 font-size: 14px;
             }
 
@@ -117,17 +124,16 @@
             }
 
             .card {
-                padding: 10px;
+                padding: 15px;
                 font-size: 13px;
             }
 
             .container {
                 grid-template-columns: 1fr;
             }
-        }
 
+        }
     </style>
-    <!-- PDF.js 라이브러리 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
 <body>
@@ -135,28 +141,19 @@
 <h1>MJ81</h1>
 
 <div class="container">
-    <!-- PDF 카드가 제일 위로 오도록 설정 -->
+    <!-- 동영상 매뉴얼 카드 -->
+    <div class="card" id="video-manual-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
+        <h3>동영상 매뉴얼</h3>
+        <button onclick="openVideoManual()">영상 보기</button>
+    </div>
+
+    <!-- PDF 매뉴얼 카드 -->
     <div class="card" id="pdf-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png" alt="PDF 아이콘">
         <h3>매뉴얼</h3>
+        <button onclick="showPDFButtons()">매뉴얼 보기</button>
     </div>
-
-    <!-- 동영상 카드들 -->
-    <div class="card" id="video-card1">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
-        <h3>밀착검지기 동영상</h3>
-    </div>
-
-    <div class="card" id="video-card2">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
-        <h3>동영상 2</h3>
-    </div>
-
-    <div class="card" id="video-card3">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
-        <h3>동영상 3</h3>
-    </div>
-
 </div>
 
 <!-- 비디오 스트리밍 영역 -->
@@ -180,14 +177,66 @@
 </div>
 
 <script>
-    // 비디오 파일 스트리밍
-    function openVideo(videoUrl) {
-        document.getElementById('video-source').src = videoUrl;
-        document.getElementById('video-player').load();
-        document.getElementById('video-container').style.display = 'block';
-        
-        // 다운로드 링크 업데이트
-        document.getElementById('download-link').href = videoUrl;
+    // 동영상 매뉴얼 열기
+    function openVideoManual() {
+        const newWindow = window.open('', '', 'width=800,height=600');
+        newWindow.document.write(`
+            <html>
+                <head>
+                    <title>동영상 매뉴얼</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            text-align: center;
+                            padding: 20px;
+                        }
+                        h2 {
+                            font-size: 24px;
+                        }
+                        .video-preview {
+                            display: flex;
+                            justify-content: center;
+                            gap: 15px;
+                            margin-top: 20px;
+                        }
+                        video {
+                            width: 100%;
+                            max-width: 400px;
+                            margin: 20px;
+                            border-radius: 10px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h2>동영상 매뉴얼</h2>
+                    <div class="video-preview">
+                        <button onclick="playVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4')">밀착 동영상</button>
+                        <button onclick="playVideo('https://github.com/rudals0372/k/raw/main/다른동영상1.mp4')">동영상 2</button>
+                        <button onclick="playVideo('https://github.com/rudals0372/k/raw/main/다른동영상2.mp4')">동영상 3</button>
+                    </div>
+                    <div id="video-container" style="display:none; margin-top: 20px;">
+                        <h3>선택한 동영상:</h3>
+                        <video id="video-player" controls>
+                            <source id="video-source" src="" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <script>
+                        function playVideo(url) {
+                            document.getElementById('video-source').src = url;
+                            document.getElementById('video-player').load();
+                            document.getElementById('video-container').style.display = 'block';
+                        }
+                    </script>
+                </body>
+            </html>
+        `);
+    }
+
+    // PDF 매뉴얼 버튼 열기
+    function showPDFButtons() {
+        document.getElementById('pdf-buttons').style.display = 'block';
+        document.getElementById('video-container').style.display = 'none';
     }
 
     // PDF 파일 미리보기 열기
@@ -196,24 +245,6 @@
         const viewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(pdfUrl);
         newWindow.location.href = viewerUrl;
     }
-
-    // 카드 클릭 시 비디오 또는 PDF 버튼 표시
-    document.getElementById('video-card1').addEventListener('click', function() {
-        openVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4');
-    });
-
-    document.getElementById('video-card2').addEventListener('click', function() {
-        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상1.mp4');  // 다른 비디오 URL
-    });
-
-    document.getElementById('video-card3').addEventListener('click', function() {
-        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상2.mp4');  // 다른 비디오 URL
-    });
-
-    document.getElementById('pdf-card').addEventListener('click', function() {
-        document.getElementById('pdf-buttons').style.display = 'block';
-        document.getElementById('video-container').style.display = 'none';
-    });
 </script>
 
 </body>
