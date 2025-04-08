@@ -23,7 +23,7 @@
 
         .container {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);  /* 2개씩 배치 */
+            grid-template-columns: repeat(2, 1fr);  /* 한 줄에 두 개 */
             gap: 20px;
             padding: 20px;
             max-width: 1000px;
@@ -124,7 +124,7 @@
             }
 
             .container {
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, 1fr); /* 한 줄에 두 개 */
             }
         }
 
@@ -139,7 +139,7 @@
             }
 
             .container {
-                grid-template-columns: 1fr;
+                grid-template-columns: repeat(2, 1fr); /* 한 줄에 두 개 */
             }
 
         }
