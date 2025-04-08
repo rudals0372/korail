@@ -202,10 +202,10 @@
             currentPdf = '';
         } else {
             currentPdf = pdfUrl;
+            document.getElementById('pdf-buttons').style.display = 'block';
             const newWindow = window.open();
             const viewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(pdfUrl);
             newWindow.location.href = viewerUrl;
-            document.getElementById('pdf-buttons').style.display = 'none';  // PDF 영역 닫기
         }
     }
 
