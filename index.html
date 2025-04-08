@@ -16,11 +16,12 @@
             text-align: center;
             margin-top: 30px;
             color: #333;
+            font-size: 2em;
         }
 
         .container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 20px;
             padding: 20px;
         }
@@ -29,33 +30,36 @@
             background-color: #fff;
             border-radius: 8px;
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             cursor: pointer;
-            transition: transform 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            max-width: 250px; /* 카드 최대 너비 */
+            margin: 0 auto; /* 카드가 가운데로 정렬되도록 */
         }
 
         .card img {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             margin-bottom: 15px;
         }
 
         .card h3 {
             margin: 0;
-            font-size: 18px;
+            font-size: 16px;
             font-weight: 600;
             color: #333;
         }
 
         .card:hover {
             transform: scale(1.05);
+            box-shadow: 0 8px 40px rgba(0, 0, 0, 0.2); /* 카드 hover 시 그림자 효과 */
         }
 
         button {
             margin: 10px;
             padding: 12px 20px;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
             background-color: #333;
             color: white;
@@ -70,7 +74,7 @@
 
         video {
             width: 100%;
-            max-width: 800px;
+            max-width: 700px;
             margin: 20px auto;
             display: block;
             border-radius: 10px;
@@ -94,11 +98,12 @@
 
         @media (max-width: 768px) {
             h1 {
-                font-size: 24px;
+                font-size: 1.8em;
             }
 
             .card {
-                padding: 15px;
+                padding: 12px;
+                font-size: 14px;
             }
 
             .container {
@@ -108,11 +113,12 @@
 
         @media (max-width: 480px) {
             h1 {
-                font-size: 20px;
+                font-size: 1.5em;
             }
 
             .card {
                 padding: 10px;
+                font-size: 13px;
             }
 
             .container {
