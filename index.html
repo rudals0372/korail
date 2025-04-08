@@ -175,6 +175,7 @@
 
 <script>
     let currentVideo = '';
+    let currentPdf = '';
 
     // 비디오 파일 스트리밍
     function openVideo(videoUrl) {
@@ -195,9 +196,17 @@
 
     // PDF 파일 미리보기 열기
     function openPDF(pdfUrl) {
-        const newWindow = window.open();
-        const viewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(pdfUrl);
-        newWindow.location.href = viewerUrl;
+        // 동일한 PDF 카드 클릭 시 초기화
+        if (currentPdf === pdfUrl) {
+            document.getElementById('pdf-buttons').style.display = 'none';
+            currentPdf = '';
+        } else {
+            currentPdf = pdfUrl;
+            const newWindow = window.open();
+            const viewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(pdfUrl);
+            newWindow.location.href = viewerUrl;
+            document.getElementById('pdf-buttons').style.display = 'none';  // PDF 영역 닫기
+        }
     }
 
     // 카드 클릭 시 비디오 또는 PDF 버튼 표시
@@ -214,9 +223,7 @@
     });
 
     document.getElementById('pdf-card').addEventListener('click', function() {
-        // PDF 관련 버튼 표시 및 비디오 스트리밍 숨기기
-        document.getElementById('pdf-buttons').style.display = 'block';
-        document.getElementById('video-container').style.display = 'none';
+        openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/검사기준.pdf');
     });
 </script>
 
