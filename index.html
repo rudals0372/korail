@@ -3,13 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PDF 미리보기</title>
+    <title>매뉴얼 웹사이트</title>
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #fff;
+            border-radius: 8px;
+            text-align: center;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+        }
+
+        .card img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
         button {
             margin: 10px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
+            background-color: #333;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #555;
+        }
+
+        #viewer {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+        }
+
+        button.close {
+            margin-top: 20px;
+            background-color: red;
         }
     </style>
     <!-- PDF.js 라이브러리 -->
@@ -17,22 +86,91 @@
 </head>
 <body>
 
-<h1>PDF 파일 미리보기</h1>
+<h1>매뉴얼 웹사이트</h1>
+
+<!-- 매뉴얼 카테고리 -->
+<div class="container">
+    <div class="card" id="pdf-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png" alt="PDF 아이콘">
+        <h3>PDF 매뉴얼</h3>
+    </div>
+
+    <div class="card" id="video-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
+        <h3>영상 매뉴얼</h3>
+    </div>
+
+    <div class="card" id="system-card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Database_file_icon.svg" alt="시스템 아이콘">
+        <h3>시스템 살펴보기</h3>
+    </div>
+</div>
+
+<!-- PDF 미리보기와 비디오 플레이어 -->
+<div id="viewer">
+    <div id="pdf-viewer">
+        <h2>PDF 파일 미리보기</h2>
+        <iframe id="pdf-frame" src="" width="100%" height="600px"></iframe>
+    </div>
+
+    <div id="video-viewer" style="display: none;">
+        <h2>영상 재생</h2>
+        <video id="video-player" controls>
+            <source id="video-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <button class="close" onclick="closeViewer()">닫기</button>
+</div>
 
 <!-- PDF 파일 미리보기 버튼 -->
-<h2>PDF 매뉴얼</h2>
-<button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/검사기준.pdf')">검사기준 PDF</button>
-<button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/노스가동매뉴얼.pdf')">노스가동매뉴얼 PDF</button>
-<button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/설치방법.pdf')">설치방법 PDF</button>
-<button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수매뉴얼.pdf')">유지보수매뉴얼 PDF</button>
-<button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수방법.pdf')">유지보수방법 PDF</button>
+<div id="pdf-buttons" style="display: none;">
+    <h2>PDF 매뉴얼</h2>
+    <button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/검사기준.pdf')">검사기준 PDF</button>
+    <button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/노스가동매뉴얼.pdf')">노스가동매뉴얼 PDF</button>
+    <button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/설치방법.pdf')">설치방법 PDF</button>
+    <button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수매뉴얼.pdf')">유지보수매뉴얼 PDF</button>
+    <button onclick="openPDF('https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수방법.pdf')">유지보수방법 PDF</button>
+</div>
+
+<!-- 비디오 파일 미리보기 버튼 -->
+<div id="video-buttons" style="display: none;">
+    <h2>영상 매뉴얼</h2>
+    <button onclick="openVideo('https://www.w3schools.com/html/mov_bbb.mp4')">예시 영상</button>
+</div>
 
 <script>
+    // PDF 파일 미리보기 열기
     function openPDF(pdfUrl) {
-        const newWindow = window.open();
-        const viewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(pdfUrl);
-        newWindow.location.href = viewerUrl;
+        document.getElementById('pdf-frame').src = pdfUrl;
+        document.getElementById('pdf-viewer').style.display = 'block';
+        document.getElementById('video-viewer').style.display = 'none';  // 비디오 숨기기
     }
+
+    // 비디오 파일 재생
+    function openVideo(videoUrl) {
+        document.getElementById('video-source').src = videoUrl;
+        document.getElementById('video-player').load();
+        document.getElementById('video-viewer').style.display = 'block';
+        document.getElementById('pdf-viewer').style.display = 'none';  // PDF 숨기기
+    }
+
+    // 미리보기 화면 닫기
+    function closeViewer() {
+        document.getElementById('viewer').style.display = 'none';
+    }
+
+    // 카드 클릭 시 PDF 또는 비디오 버튼 표시
+    document.getElementById('pdf-card').addEventListener('click', function() {
+        document.getElementById('pdf-buttons').style.display = 'block';
+        document.getElementById('video-buttons').style.display = 'none';
+    });
+
+    document.getElementById('video-card').addEventListener('click', function() {
+        document.getElementById('video-buttons').style.display = 'block';
+        document.getElementById('pdf-buttons').style.display = 'none';
+    });
 </script>
 
 </body>
