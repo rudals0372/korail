@@ -133,6 +133,7 @@
             }
 
         }
+
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
@@ -141,18 +142,30 @@
 <h1>MJ81</h1>
 
 <div class="container">
-    <!-- 동영상 매뉴얼 카드 -->
-    <div class="card" id="video-manual-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
-        <h3>동영상 매뉴얼</h3>
-        <button onclick="openVideoManual()">영상 보기</button>
-    </div>
-
-    <!-- PDF 매뉴얼 카드 -->
+    <!-- PDF 카드 -->
     <div class="card" id="pdf-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png" alt="PDF 아이콘">
         <h3>매뉴얼</h3>
         <button onclick="showPDFButtons()">매뉴얼 보기</button>
+    </div>
+
+    <!-- 동영상 카드들 -->
+    <div class="card" id="video-card1">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
+        <h3>밀착검지기 동영상</h3>
+        <button onclick="openVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4')">영상 보기</button>
+    </div>
+
+    <div class="card" id="video-card2">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
+        <h3>동영상 2</h3>
+        <button onclick="openVideo('https://github.com/rudals0372/k/raw/main/다른동영상1.mp4')">영상 보기</button>
+    </div>
+
+    <div class="card" id="video-card3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
+        <h3>동영상 3</h3>
+        <button onclick="openVideo('https://github.com/rudals0372/k/raw/main/다른동영상2.mp4')">영상 보기</button>
     </div>
 </div>
 
@@ -177,66 +190,14 @@
 </div>
 
 <script>
-    // 동영상 매뉴얼 열기
-    function openVideoManual() {
-        const newWindow = window.open('', '', 'width=800,height=600');
-        newWindow.document.write(`
-            <html>
-                <head>
-                    <title>동영상 매뉴얼</title>
-                    <style>
-                        body {
-                            font-family: Arial, sans-serif;
-                            text-align: center;
-                            padding: 20px;
-                        }
-                        h2 {
-                            font-size: 24px;
-                        }
-                        .video-preview {
-                            display: flex;
-                            justify-content: center;
-                            gap: 15px;
-                            margin-top: 20px;
-                        }
-                        video {
-                            width: 100%;
-                            max-width: 400px;
-                            margin: 20px;
-                            border-radius: 10px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    <h2>동영상 매뉴얼</h2>
-                    <div class="video-preview">
-                        <button onclick="playVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4')">밀착 동영상</button>
-                        <button onclick="playVideo('https://github.com/rudals0372/k/raw/main/다른동영상1.mp4')">동영상 2</button>
-                        <button onclick="playVideo('https://github.com/rudals0372/k/raw/main/다른동영상2.mp4')">동영상 3</button>
-                    </div>
-                    <div id="video-container" style="display:none; margin-top: 20px;">
-                        <h3>선택한 동영상:</h3>
-                        <video id="video-player" controls>
-                            <source id="video-source" src="" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    </div>
-                    <script>
-                        function playVideo(url) {
-                            document.getElementById('video-source').src = url;
-                            document.getElementById('video-player').load();
-                            document.getElementById('video-container').style.display = 'block';
-                        }
-                    </script>
-                </body>
-            </html>
-        `);
-    }
-
-    // PDF 매뉴얼 버튼 열기
-    function showPDFButtons() {
-        document.getElementById('pdf-buttons').style.display = 'block';
-        document.getElementById('video-container').style.display = 'none';
+    // 비디오 파일 스트리밍
+    function openVideo(videoUrl) {
+        document.getElementById('video-source').src = videoUrl;
+        document.getElementById('video-player').load();
+        document.getElementById('video-container').style.display = 'block';
+        
+        // 다운로드 링크 업데이트
+        document.getElementById('download-link').href = videoUrl;
     }
 
     // PDF 파일 미리보기 열기
@@ -244,6 +205,12 @@
         const newWindow = window.open();
         const viewerUrl = 'https://mozilla.github.io/pdf.js/web/viewer.html?file=' + encodeURIComponent(pdfUrl);
         newWindow.location.href = viewerUrl;
+    }
+
+    // 카드 클릭 시 비디오 또는 PDF 버튼 표시
+    function showPDFButtons() {
+        document.getElementById('pdf-buttons').style.display = 'block';
+        document.getElementById('video-container').style.display = 'none';
     }
 </script>
 
