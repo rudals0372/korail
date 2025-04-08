@@ -129,7 +129,7 @@
 <h1>동영상 스트리밍</h1>
 
 <div class="container">
-    <!-- PDF 카드가 제일 위로 오도록 설정 -->
+    <!-- PDF 카드 -->
     <div class="card" id="pdf-card">
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/18/PDF_file_icon.svg/1200px-PDF_file_icon.svg.png" alt="PDF 아이콘">
         <h3>PDF 매뉴얼</h3>
@@ -179,14 +179,13 @@
 
     // 비디오 파일 스트리밍
     function openVideo(videoUrl) {
-        // PDF 버튼 사라지게 하기
+        // 다른 콘텐츠는 숨기고, 해당 내용만 보이게 하기
         document.getElementById('pdf-buttons').style.display = 'none';
-        
+        document.getElementById('video-container').style.display = 'none';
+
         // 동일한 비디오 카드 클릭 시 초기화
         if (currentVideo === videoUrl) {
-            // 비디오를 닫고 PDF 버튼들을 다시 보이게
             document.getElementById('video-container').style.display = 'none';
-            document.getElementById('pdf-buttons').style.display = 'block';
             currentVideo = '';
         } else {
             currentVideo = videoUrl;
@@ -203,7 +202,7 @@
     function openPDF(pdfUrl) {
         // 동영상 영역 숨기기
         document.getElementById('video-container').style.display = 'none';
-        
+
         // 동일한 PDF 카드 클릭 시 초기화
         if (currentPdf === pdfUrl) {
             document.getElementById('pdf-buttons').style.display = 'none';
