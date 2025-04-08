@@ -15,11 +15,12 @@
         h1 {
             text-align: center;
             margin-top: 30px;
+            color: #333;
         }
 
         .container {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 20px;
             padding: 20px;
         }
@@ -29,30 +30,38 @@
             border-radius: 8px;
             text-align: center;
             padding: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
             cursor: pointer;
+            transition: transform 0.3s ease;
         }
 
         .card img {
-            width: 50px;
-            height: 50px;
-            margin-bottom: 10px;
+            width: 60px;
+            height: 60px;
+            margin-bottom: 15px;
         }
 
         .card h3 {
             margin: 0;
             font-size: 18px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .card:hover {
+            transform: scale(1.05);
         }
 
         button {
             margin: 10px;
-            padding: 10px 20px;
+            padding: 12px 20px;
             font-size: 16px;
             cursor: pointer;
             background-color: #333;
             color: white;
             border: none;
             border-radius: 5px;
+            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -64,6 +73,7 @@
             max-width: 800px;
             margin: 20px auto;
             display: block;
+            border-radius: 10px;
         }
 
         .download-btn {
@@ -74,10 +84,40 @@
             border-radius: 5px;
             text-decoration: none;
             font-size: 16px;
+            display: inline-block;
+            transition: background-color 0.3s ease;
         }
 
         .download-btn:hover {
             background-color: #218838;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 24px;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 20px;
+            }
+
+            .card {
+                padding: 10px;
+            }
+
+            .container {
+                grid-template-columns: 1fr;
+            }
         }
 
     </style>
@@ -89,10 +129,20 @@
 <h1>동영상 스트리밍</h1>
 
 <div class="container">
-    <!-- 카드 형식으로 비디오 선택 -->
-    <div class="card" id="video-card">
+    <!-- 동영상 카드 -->
+    <div class="card" id="video-card1">
         <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
-        <h3>비디오 매뉴얼</h3>
+        <h3>동영상 1</h3>
+    </div>
+
+    <div class="card" id="video-card2">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
+        <h3>동영상 2</h3>
+    </div>
+
+    <div class="card" id="video-card3">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/7/75/Video_camera_icon.png" alt="비디오 아이콘">
+        <h3>동영상 3</h3>
     </div>
 
     <div class="card" id="pdf-card">
@@ -100,10 +150,6 @@
         <h3>PDF 매뉴얼</h3>
     </div>
 
-    <div class="card" id="system-card">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2d/Database_file_icon.svg" alt="시스템 아이콘">
-        <h3>시스템 살펴보기</h3>
-    </div>
 </div>
 
 <!-- 비디오 스트리밍 영역 -->
@@ -145,9 +191,16 @@
     }
 
     // 카드 클릭 시 비디오 또는 PDF 버튼 표시
-    document.getElementById('video-card').addEventListener('click', function() {
-        document.getElementById('pdf-buttons').style.display = 'none';
+    document.getElementById('video-card1').addEventListener('click', function() {
         openVideo('https://github.com/rudals0372/k/raw/main/밀착동영상.mp4');
+    });
+
+    document.getElementById('video-card2').addEventListener('click', function() {
+        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상1.mp4');  // 다른 비디오 URL
+    });
+
+    document.getElementById('video-card3').addEventListener('click', function() {
+        openVideo('https://github.com/rudals0372/k/raw/main/다른동영상2.mp4');  // 다른 비디오 URL
     });
 
     document.getElementById('pdf-card').addEventListener('click', function() {
