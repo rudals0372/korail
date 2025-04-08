@@ -184,7 +184,9 @@
         
         // 동일한 비디오 카드 클릭 시 초기화
         if (currentVideo === videoUrl) {
+            // 비디오를 닫고 PDF 버튼들을 다시 보이게
             document.getElementById('video-container').style.display = 'none';
+            document.getElementById('pdf-buttons').style.display = 'block';
             currentVideo = '';
         } else {
             currentVideo = videoUrl;
