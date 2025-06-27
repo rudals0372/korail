@@ -1,332 +1,721 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MJ81</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
-    <style>
-        body {
-            font-family: 'Pretendard', sans-serif;
-            background-color: #f0f4f8;
-            margin: 0;
-            padding: 0;
-            color: #2c3e50;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MJ81</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 
-        .login-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f0f4f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
+  <style>
+    body {
+      font-family: 'Pretendard', sans-serif;
+      background-color: #f0f4f8;
+      margin: 0;
+      padding: 0;
+      color: #2c3e50;
+    }
 
-        .login-box {
-            background-color: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            width: 300px;
-            text-align: center;
-        }
+    .login-screen {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 2000;
+    }
 
-        .login-box input {
-            margin: 10px 0;
-            padding: 10px;
-            font-size: 16px;
-        }
+    .login-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      text-align: center;
+    }
 
-        .login-box button {
-            padding: 10px;
-            font-size: 16px;
-            background-color: #4a90e2;
-            color: white;
-            border: none;
-            cursor: pointer;
-            margin-top: 10px;
-            border-radius: 5px;
-        }
+    .login-box input {
+      margin: 10px 0;
+      padding: 10px;
+      font-size: 16px;
+    }
 
-        .login-box button:hover {
-            background-color: #357ABD;
-        }
+    .login-box button {
+      padding: 10px;
+      font-size: 16px;
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+      border-radius: 5px;
+    }
 
-        h1 {
-            text-align: center;
-            font-size: 2em;
-            margin-top: 20px;
-        }
+    .login-box button:hover {
+      background-color: #357ABD;
+    }
 
-        .container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            padding: 20px;
-            max-width: 1000px;
-            justify-items: center;
-            align-items: center;
-            margin: 0 auto;
-        }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      margin-top: 20px;
+    }
 
-        .card {
-            background-color: #fff;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            width: 130px;
-            height: 190px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: space-between;
-            position: relative;
-            margin: 0 auto;
-        }
+    .container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      padding: 20px;
+      max-width: 1000px;
+      justify-items: center;
+      align-items: center;
+      margin: 0 auto;
+    }
 
-.card i.material-icons {
-    font-size: 50px;
-    margin-top: 30px;
-    margin-bottom: 10px;
-    color: #1565c0; /* 회사 블루 컬러 */
+    .card {
+      background-color: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      width: 130px;
+      height: 190px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      margin: 0 auto;
+    }
+
+    .card i.material-icons {
+      font-size: 50px;
+      margin-top: 30px;
+      margin-bottom: 10px;
+      color: #1565c0;
+    }
+
+    .card p {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    }
+
+    .full-screen-info {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-color: #f0f4f8;
+      color: #2c3e50;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      text-align: center;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      left: 5px;
+      background-color: transparent;
+      border: none;
+      font-size: 24px;
+      color: #2c3e50;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .pdf-button {
+      width: 100%;
+      height: 40px;
+      background-color: #4a90e2;
+      color: #fff;
+      border: 2px solid #4a90e2;
+      border-radius: 8px;
+      font-size: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      box-sizing: border-box;
+    }
+
+    .pdf-buttons-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      width: 100vw;
+      padding: 0 10px;
+      box-sizing: border-box;
+    }
+#device-11-content {
+  flex-direction: column;
 }
+    @media (max-width: 480px) {
+      .card p {
+        font-size: 16px;
+      }
+    }
 
-        .card p {
-            font-size: 18px;
-            font-weight: 600;
-            color: #2c3e50;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-
-        .full-screen-info {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #f0f4f8;
-            color: #2c3e50;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            text-align: center;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        .close-btn {
-            position: absolute;
-            top: 10px;
-            left: 5px;
-            background-color: transparent;
-            border: none;
-            font-size: 24px;
-            color: #2c3e50;
-            cursor: pointer;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        .pdf-button {
-            width: 100%;
-            height: 40px;
-            background-color: #4a90e2;
-            color: #fff;
-            border: 2px solid #4a90e2;
-            border-radius: 8px;
-            font-size: 14px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            box-sizing: border-box;
-        }
-
-
-        .pdf-buttons-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            width: 100vw;
-            padding: 0 10px;
-            box-sizing: border-box;
-        }
-@media (max-width: 480px) {
-  .card p {
-    font-size: 16px;
-  }
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    button {
+  -webkit-tap-highlight-color: transparent;
 }
-        
-        @media (max-width: 768px) {
-            .container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-    </style>
+  </style>
 </head>
 <body>
 
 <!-- 로그인 화면 -->
 <div id="login-screen" class="login-screen">
-    <div class="login-box">
-        <h2>로그인</h2>
-        <input type="text" id="username" placeholder="아이디">
-        <input type="password" id="password" placeholder="비밀번호">
-        <button onclick="login()">로그인</button>
-        <p id="login-error" style="color: red; display: none;">아이디 또는 비밀번호가 올바르지 않습니다.</p>
-    </div>
+  <div class="login-box">
+    <h2>로그인</h2>
+    <input type="text" id="username" placeholder="아이디">
+    <input type="password" id="password" placeholder="비밀번호">
+    <button onclick="login()">로그인</button>
+    <p id="login-error" style="color: red; display: none;">아이디 또는 비밀번호가 올바르지 않습니다.</p>
+  </div>
 </div>
 
-<!-- 메인 콘텐츠 -->
-<div id="main-content" style="display: none;">
-    <h1>MJ81</h1>
-    <div class="container">
-        <div class="card" data-card="1">
-            <i class="material-icons">menu_book</i>
-            <p>매뉴얼</p>
-        </div>
-        <div class="card" data-card="2">
-            <i class="material-icons">architecture</i>
-            <p>철도설계지침</p>
-        </div>
-        <div class="card" data-card="3">
-            <i class="material-icons">list_alt</i>
-            <p>점검부</p>
-        </div>
-        <div class="card" data-card="4">
-            <i class="material-icons">smart_display</i>
-            <p>동영상</p>
-        </div>
-    </div>
+<!-- 12개 장비 카드 화면 -->
+<div id="device-selection" style="display: none;">
+  <h1>장비 선택</h1>
+  <div class="container">
+    <div class="card" onclick="selectDevice(1)"><i class="material-icons">precision_manufacturing</i><p>MJ</p></div>
+    <div class="card" onclick="selectDevice(2)"><i class="material-icons">build</i><p>NS</p></div>
+    <div class="card" onclick="selectDevice(3)"><i class="material-icons">power</i><p>전원장치</p></div>
+    <div class="card" onclick="selectDevice(4)"><i class="material-icons">memory</i><p>컨트롤러</p></div>
+    <div class="card" onclick="selectDevice(5)"><i class="material-icons">camera_alt</i><p>카메라</p></div>
+    <div class="card" onclick="selectDevice(6)"><i class="material-icons">router</i><p>통신모듈</p></div>
+    <div class="card" onclick="selectDevice(7)"><i class="material-icons">lightbulb</i><p>조명장치</p></div>
+    <div class="card" onclick="selectDevice(8)"><i class="material-icons">speaker</i><p>알림장치</p></div>
+    <div class="card" onclick="selectDevice(9)"><i class="material-icons">settings_input_component</i><p>I/O모듈</p></div>
+    <div class="card" onclick="selectDevice(10)"><i class="material-icons">storage</i><p>데이터저장</p></div>
+    <div class="card" onclick="selectDevice(11)"><i class="material-icons">contact_phone</i><p>비상연락망</p></div>
+    <div class="card" onclick="selectDevice(12)"><i class="material-icons">inventory</i><p>자재현황</p></div>
+  </div>
+</div>
 
-    <div id="full-screen-info" class="full-screen-info">
-        <button class="close-btn" onclick="closeFullScreen()">
-            <i class="material-icons">arrow_back</i>
-        </button>
-        <div id="full-screen-text"></div>
+<!-- MJ 콘텐츠 -->
+<div id="main-content" style="display: none;">
+  <button class="close-btn" onclick="goBackToDeviceSelection()">
+    <i class="material-icons">arrow_back</i>
+  </button>
+  <h1>MJ81</h1>
+  <div class="container">
+    <div class="card" data-card="1">
+      <i class="material-icons">menu_book</i>
+      <p>매뉴얼</p>
     </div>
+    <div class="card" data-card="3">
+      <i class="material-icons">list_alt</i>
+      <p>점검부</p>
+    </div>
+  </div>
+
+  <div id="full-screen-info" class="full-screen-info">
+    <button class="close-btn" onclick="closeFullScreen()">
+      <i class="material-icons">arrow_back</i>
+    </button>
+    <div id="full-screen-text"></div>
+  </div>
+</div>
+<!-- 위치센서 화면 -->
+<div id="device-11-content" class="full-screen-info" style="display: none; flex-direction: column; align-items: center;">
+  <!-- 뒤로가기 버튼 -->
+  <button class="close-btn" onclick="goBackToDeviceSelection()">
+    <i class="material-icons">arrow_back</i>
+  </button>
+
+  <!-- 제목: 위쪽 가운데 단독 줄 -->
+  <div style="width: 100%; text-align: center; margin-top: 10px;">
+    <h2 style="margin: 10px 0;">비상연락망</h2>
+  </div>
+
+  <!-- 파일 선택 & 저장 버튼: 위쪽 오른쪽 정렬 -->
+  <div style="width: 100%; display: flex; justify-content: flex-end; padding: 0 20px; box-sizing: border-box; margin-bottom: 10px; gap: 10px;">
+    <input type="file" id="pdfInput" accept="application/pdf">
+    <button onclick="openSavedPDF()" style="margin-right: 8px;">열기</button>
+    <button onclick="savePDF()">저장</button>
+  </div>
+
+<!-- PDF 미리보기 -->
+<div id="pdfViewer" style="
+  width: 100%;
+  flex: 1;
+  padding: 0 4px;
+  box-sizing: border-box;
+  overflow: hidden;">
+  <iframe id="pdfFrame" width="100%" height="100%" style="border: 1px solid #ccc;"></iframe>
+</div>
+</div>
+<!-- 자재현황 화면 -->
+<div id="device-12-content" class="full-screen-info" style="display: none; flex-direction: column; padding: 20px; box-sizing: border-box;">
+
+  <!-- 뒤로가기 버튼 -->
+  <button class="close-btn" onclick="goBackInMaterialFlow()">
+    <i class="material-icons">arrow_back</i>
+  </button>
+
+  <!-- 팀 목록 화면 -->
+  <div id="team-list" style="width: 100%;">
+    <h2>팀 선택</h2>
+    <div class="container" id="team-cards"></div>
+  </div>
+
+  <!-- 창고 목록 화면 -->
+  <div id="warehouse-list" style="width: 100%; display: none;">
+    <h2>창고 선택</h2>
+    <div class="container" id="warehouse-cards"></div>
+  </div>
+
+ <!-- 자재 리스트 화면 -->
+<div id="material-list" style="width: 100%; display: none; flex-direction: column; padding: 20px; box-sizing: border-box;">
+
+  <!-- 자재 리스트 상단 헤더 (제목 + 설정 아이콘) -->
+  <div id="material-list-header" style="display: flex; justify-content: center; align-items: center; margin-bottom: 10px;">
+    <h2 id="material-list-title" style="margin: 0;">자재 현황</h2>
+
+ <!-- 설정 버튼 -->
+  <button id="settings-button">설정</button>
+
+  <!-- 설정 메뉴 -->
+  <div id="settings-menu">
+    <h3>자재 관리</h3>
+    <button id="add-material-btn">자재 추가</button>
+    <button id="edit-material-btn">자재 수정</button>
+    <button id="delete-material-btn">자재 삭제</button>
+  </div>
+
+  <!-- 자재 추가/수정 폼 -->
+  <div id="material-form">
+    <h3>자재 추가/수정</h3>
+    <label for="material-name">자재 이름:</label>
+    <input type="text" id="material-name">
+    <label for="material-quantity">수량:</label>
+    <input type="number" id="material-quantity">
+    <button id="save-material-button">저장</button>
+  </div>
+
+  <div id="material-list"></div>
 </div>
 
 <script>
-    function login() {
-        const id = document.getElementById('username').value;
-        const pw = document.getElementById('password').value;
+   
+  function login() {
+    const id = document.getElementById('username').value;
+    const pw = document.getElementById('password').value;
 
-        if (id === 'sign' && pw === '7788') {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-        } else {
-            document.getElementById('login-error').style.display = 'block';
-        }
+    if (id === 'sign' && pw === '7788') {
+      sessionStorage.setItem('isLoggedIn', 'true'); // 로그인 상태 저장
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('device-selection').style.display = 'block';
+    } else {
+      document.getElementById('login-error').style.display = 'block';
     }
+  }
 
-    const cardData = {
-        1: {
-            title: '매뉴얼',
-            content: '',
-            pdfUrls: [
-                { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/검사기준.pdf', name: '검사기준' },
-                { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/노스가동매뉴얼.pdf', name: '노스가동 매뉴얼' },
-                { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/설치방법.pdf', name: '설치방법' },
-                { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수매뉴얼.pdf', name: '유지보수 매뉴얼' },
-                { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수방법.pdf', name: '유지보수 방법' }
-            ],
-            type: 'pdf'
-        },
-        2: {
-            title: '철도설계지침',
-            content: '',
-            pdfUrls: [
-                { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/1.pdf', name: '선로전환기 기능' },
-                { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/2.pdf', name: '선로전환기 설치' },
-            ],
-            type: 'pdf'
-        },
-        4: {
-            title: '밀착검지기 동영상',
-            content: '',
-            videoUrl: 'https://github.com/rudals0372/k/raw/main/밀착동영상.mp4',
-            type: 'video'
-        }
+  function selectDevice(number) {
+    document.getElementById('device-selection').style.display = 'none';
+
+    if (number === 1) {
+      document.getElementById('main-content').style.display = 'block';
+    } else if (number === 11) {
+      document.getElementById('device-11-content').style.display = 'flex';
+    } else if (number === 12) {
+      document.getElementById('device-12-content').style.display = 'flex';
+    } else {
+      alert(`${number}번 장비는 아직 연결되지 않았습니다.`);
+      document.getElementById('device-selection').style.display = 'block';
+    }
+  }
+
+  const cardData = {
+    1: {
+      title: '매뉴얼',
+      content: '',
+      pdfUrls: [
+        { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/검사기준.pdf', name: '검사기준' },
+        { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/노스가동매뉴얼.pdf', name: '노스가동 매뉴얼' },
+        { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/설치방법.pdf', name: '설치방법' },
+        { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수매뉴얼.pdf', name: '유지보수 매뉴얼' },
+        { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/유지보수방법.pdf', name: '유지보수 방법' }
+      ],
+      type: 'pdf'
+    },
+    3: {
+      title: '점검부',
+      content: '',
+      pdfUrls: [
+        { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/1.pdf', name: '점검부1' },
+        { url: 'https://raw.githubusercontent.com/rudals0372/k/main/docs/2.pdf', name: '점검부2' },
+      ],
+      type: 'pdf'
+    }
+  };
+
+  document.querySelectorAll('.card[data-card]').forEach(card => {
+    card.addEventListener('click', function () {
+      const cardNumber = this.getAttribute('data-card');
+      const data = cardData[cardNumber];
+      const fullScreenInfo = document.getElementById('full-screen-info');
+      const fullScreenText = document.getElementById('full-screen-text');
+
+      if (data && data.type === 'pdf') {
+        let pdfButtons = '';
+        data.pdfUrls.forEach(item => {
+          pdfButtons += `
+            <button onclick="openPDF('${item.url}')" class="pdf-button">${item.name}</button>
+          `;
+        });
+
+        fullScreenText.innerHTML = `
+          <h2>${data.title}</h2>
+          <p>${data.content}</p>
+          <div class="pdf-buttons-container">
+            ${pdfButtons}
+          </div>
+        `;
+
+        fullScreenInfo.style.display = 'flex';
+        history.pushState(null, null, window.location.href);
+        window.onpopstate = function () {
+          closeFullScreen();
+        };
+      }
+    });
+  });
+
+  function openPDF(url) {
+    const viewerUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(url)}`;
+    window.open(viewerUrl, '_blank');
+  }
+
+  function closeFullScreen() {
+    document.getElementById('full-screen-info').style.display = 'none';
+  }
+
+  function goBackToDeviceSelection() {
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('device-11-content').style.display = 'none';
+    document.getElementById('device-12-content').style.display = 'none';
+    document.getElementById('device-selection').style.display = 'block';
+  }
+
+  const pdfInput = document.getElementById('pdfInput');
+  const pdfFrame = document.getElementById('pdfFrame');
+
+  pdfInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (file && file.type === 'application/pdf') {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const base64PDF = e.target.result;
+        pdfFrame.src = base64PDF;
+        sessionStorage.setItem('tempPDF', base64PDF);
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+
+  function savePDF() {
+    const tempPDF = sessionStorage.getItem('tempPDF');
+    if (tempPDF) {
+      localStorage.setItem('savedPDF', tempPDF);
+      alert('PDF가 저장되었습니다.');
+    } else {
+      alert('저장할 PDF가 없습니다.');
+    }
+  }
+
+    function openSavedPDF() {
+  const base64Data = localStorage.getItem('savedPDF');
+
+  if (!base64Data || !base64Data.startsWith('data:application/pdf;base64,')) {
+    alert('저장된 PDF가 없습니다.');
+    return;
+  }
+
+  const base64 = base64Data.split(',')[1];
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+
+  const blob = new Blob([bytes], { type: 'application/pdf' });
+  const blobUrl = URL.createObjectURL(blob);
+
+  // 브라우저 새 탭에서 열기
+  window.open(blobUrl, '_blank');
+}
+  
+  window.addEventListener('load', function () {
+    // PDF 미리보기
+    const savedPDF = localStorage.getItem('savedPDF');
+    if (savedPDF) {
+      pdfFrame.src = savedPDF;
+    }
+  });
+                          
+
+
+
+  // 팀 목록 렌더링
+  function renderTeamList() {
+    const container = document.getElementById('team-cards');
+    container.innerHTML = '';
+    for (const team in materialData) {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.style.width = '120px';
+      div.style.height = '120px';
+      div.style.display = 'flex';
+      div.style.flexDirection = 'column';
+      div.style.justifyContent = 'center';
+      div.style.alignItems = 'center';
+      div.style.cursor = 'pointer';
+      div.style.fontWeight = '600';
+      div.style.fontSize = '18px';
+      div.textContent = team.toUpperCase();
+      div.onclick = () => selectTeam(team);
+      container.appendChild(div);
+    }
+  }
+
+  function selectTeam(team) {
+    currentTeam = team;
+    document.getElementById('team-list').style.display = 'none';
+    document.getElementById('warehouse-list').style.display = 'block';
+    renderWarehouseList();
+  }
+
+  function renderWarehouseList() {
+    const container = document.getElementById('warehouse-cards');
+    container.innerHTML = '';
+    const warehouses = Object.keys(materialData[currentTeam] || {});
+    warehouses.forEach(warehouse => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.style.width = '120px';
+      div.style.height = '120px';
+      div.style.display = 'flex';
+      div.style.flexDirection = 'column';
+      div.style.justifyContent = 'center';
+      div.style.alignItems = 'center';
+      div.style.cursor = 'pointer';
+      div.style.fontWeight = '600';
+      div.style.fontSize = '18px';
+      div.textContent = warehouse;
+      div.onclick = () => selectWarehouse(warehouse);
+      container.appendChild(div);
+    });
+  }
+
+  function selectWarehouse(warehouse) {
+    currentWarehouse = warehouse;
+    document.getElementById('warehouse-list').style.display = 'none';
+    document.getElementById('material-list').style.display = 'flex';
+    renderMaterialList();
+    setEditMode(false);  // 항상 자재 리스트 진입 시 읽기모드로 시작
+  }
+
+  // 뒤로가기 버튼 함수 (팀-창고-자재 흐름)
+  function goBackInMaterialFlow() {
+    const teamList = document.getElementById('team-list');
+    const warehouseList = document.getElementById('warehouse-list');
+    const materialList = document.getElementById('material-list');
+
+    if (materialList.style.display === 'flex') {
+      materialList.style.display = 'none';
+      warehouseList.style.display = 'block';
+      currentWarehouse = null;
+    } else if (warehouseList.style.display === 'block') {
+      warehouseList.style.display = 'none';
+      teamList.style.display = 'block';
+      currentTeam = null;
+    } else {
+      document.getElementById('device-12-content').style.display = 'none';
+      document.getElementById('device-selection').style.display = 'block';
+    }
+  }
+    
+ // Firebase 설정
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFnvY4Adn35uSb0RztjBKkPkRnhuOCYn4",
+      authDomain: "korail-dac64.firebaseapp.com",
+      databaseURL: "https://korail-dac64-default-rtdb.firebaseio.com",
+      projectId: "korail-dac64",
+      storageBucket: "korail-dac64.firebasestorage.app",
+      messagingSenderId: "366259094919",
+      appId: "1:366259094919:web:ab1c74c4f38a799113bf22",
     };
 
-    document.querySelectorAll('.card').forEach(card => {
-        card.addEventListener('click', function () {
-            const cardNumber = this.getAttribute('data-card');
-            const data = cardData[cardNumber];
-            const fullScreenInfo = document.getElementById('full-screen-info');
-            const fullScreenText = document.getElementById('full-screen-text');
 
-            if (data) {
-                if (data.type === 'pdf') {
-                    let pdfButtons = '';
-                    data.pdfUrls.forEach(item => {
-                        pdfButtons += `
-                            <button onclick="openPDF('${item.url}')" class="pdf-button">${item.name}</button>
-                        `;
-                    });
+    // Firebase 초기화
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
 
-                    fullScreenText.innerHTML = `
-                        <h2>${data.title}</h2>
-                        <p>${data.content}</p>
-                        <div class="pdf-buttons-container">
-                            ${pdfButtons}
-                        </div>
-                    `;
-                } else if (data.type === 'video') {
-                    fullScreenText.innerHTML = `
-                        <h2>${data.title}</h2>
-                        <video controls width="100%" height="auto">
-                            <source src="${data.videoUrl}" type="video/mp4">
-                            브라우저가 비디오를 지원하지 않습니다.
-                        </video>
-                    `;
-                }
-
-                fullScreenInfo.style.display = 'flex';
-
-                history.pushState(null, null, window.location.href);
-                window.onpopstate = function () {
-                    closeFullScreen();
-                };
-            }
-        });
+    // 데이터베이스에서 자재 목록 가져오기
+    const materialRef = db.ref('materials');
+    materialRef.on('value', function(snapshot) {
+      const data = snapshot.val();
+      renderMaterialList(data);
     });
 
-    function openPDF(url) {
-        const viewerUrl = `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(url)}`;
-        window.open(viewerUrl, '_blank');
+    // 자재 목록 렌더링
+    function renderMaterialList(materials) {
+      const materialListDiv = document.getElementById('material-list');
+      materialListDiv.innerHTML = ''; // 기존 자재 목록 초기화
+
+      for (const key in materials) {
+        const material = materials[key];
+        const div = document.createElement('div');
+        div.textContent = `${material.name}: ${material.quantity}`;
+
+        // 수정 버튼
+        const editButton = document.createElement('button');
+        editButton.textContent = '수정';
+        editButton.onclick = () => {
+          loadMaterialForEdit(key, material);
+        };
+
+        // 삭제 버튼
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = '삭제';
+        deleteButton.onclick = () => {
+          if (window.confirm("삭제하시겠습니까?")) {
+            deleteMaterial(key);
+          }
+        };
+
+        div.appendChild(editButton);
+        div.appendChild(deleteButton);
+        materialListDiv.appendChild(div);
+      }
     }
 
-    function closeFullScreen() {
-        document.getElementById('full-screen-info').style.display = 'none';
+    // 자재 수정 폼에 데이터 로드
+    function loadMaterialForEdit(key, material) {
+      document.getElementById('material-name').value = material.name;
+      document.getElementById('material-quantity').value = material.quantity;
+
+      // 수정하기 버튼 클릭 시 데이터베이스에 수정된 데이터 저장
+      const saveButton = document.getElementById('save-material-button');
+      saveButton.onclick = () => {
+        if (window.confirm("수정하시겠습니까?")) {
+          saveMaterialEdits(key);
+        }
+      };
     }
+
+    // 수정된 자재 데이터 저장
+    function saveMaterialEdits(key) {
+      const updatedName = document.getElementById('material-name').value;
+      const updatedQuantity = document.getElementById('material-quantity').value;
+
+      const materialToUpdate = {
+        name: updatedName,
+        quantity: updatedQuantity
+      };
+
+      // Firebase에 수정된 데이터 저장
+      const materialRefToUpdate = db.ref('materials/' + key);
+      materialRefToUpdate.set(materialToUpdate);
+
+      // 수정 후 폼 초기화
+      document.getElementById('material-name').value = '';
+      document.getElementById('material-quantity').value = '';
+    }
+
+    // 자재 추가
+    document.getElementById('add-material-btn').onclick = function() {
+      const name = document.getElementById('material-name').value;
+      const quantity = document.getElementById('material-quantity').value;
+
+      if (name && quantity) {
+        const newMaterialRef = materialRef.push();
+        newMaterialRef.set({
+          name: name,
+          quantity: quantity
+        });
+
+        // 자재 추가 후 입력창 초기화
+        document.getElementById('material-name').value = '';
+        document.getElementById('material-quantity').value = '';
+      }
+    };
+
+    // 자재 삭제
+    function deleteMaterial(key) {
+      const materialToDeleteRef = db.ref('materials/' + key);
+      materialToDeleteRef.remove();
+    }
+
+    // 설정 버튼 클릭 시 메뉴 보이기
+    document.getElementById('settings-button').onclick = function() {
+      const settingsMenu = document.getElementById('settings-menu');
+      settingsMenu.style.display = settingsMenu.style.display === 'none' ? 'block' : 'none';
+    };
+
+  // 기존 selectDevice 함수에 자재현황 초기화 추가
+  function selectDevice(number) {
+    document.getElementById('device-selection').style.display = 'none';
+
+    if (number === 1) {
+      document.getElementById('main-content').style.display = 'block';
+    } else if (number === 11) {
+      document.getElementById('device-11-content').style.display = 'flex';
+    } else if (number === 12) {
+      document.getElementById('device-12-content').style.display = 'flex';
+      loadMaterialData();
+      renderTeamList();
+
+      // 초기 화면 설정
+      document.getElementById('team-list').style.display = 'block';
+      document.getElementById('warehouse-list').style.display = 'none';
+      document.getElementById('material-list').style.display = 'none';
+
+      setEditMode(false);  // 편집 모드 끄기
+    } else {
+      alert(`${number}번 장비는 아직 연결되지 않았습니다.`);
+      document.getElementById('device-selection').style.display = 'block';
+    }
+  }
+
+
+
+    // 로그인 상태 확인
+    const isLoggedIn = sessionStorage.getItem('isLoggedIn');
+    if (isLoggedIn === 'true') {
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('device-selection').style.display = 'block';
+    }
+  
+
 </script>
-
-</body>
-</html>
+  
+ 
